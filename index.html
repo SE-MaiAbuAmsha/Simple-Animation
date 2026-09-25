@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Simple Animation</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 3rem;
+        background-color: rgb(240, 234, 152);
+        color: rgb(7, 0, 0);
+        font-family: sans-serif;
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      .hand {
+        display: inline-block;
+        font-size: 1.5rem;
+      }
+
+      @keyframes wave {
+        0% {
+          transform: rotate(0deg);
+        }
+        50% {
+          transform: rotate(20deg);
+        }
+        100% {
+          transform: rotate(0deg);
+        }
+      }
+
+      .hand {
+        animation: wave 0.5s ease-in-out infinite;
+      }
+
+      form {
+        width: 30rem;
+        height: 30rem;
+        justify-self: center;
+        align-items: center;
+        text-align: center;
+        background-color: rgba(158, 136, 11, 0.6);
+        margin-top: 1rem;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 1.2rem;
+      }
+
+      .input {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+        width: 20rem;
+        margin: 0 auto;
+      }
+
+      label {
+        margin-bottom: 0.3rem;
+      }
+
+      input {
+        padding: 0.5rem;
+        border-radius: 0.3rem;
+        border: none;
+      }
+
+      #btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 3.5rem;
+        height: 3.5rem;
+        border: none;
+        border-radius: 50%;
+        background-color: rgb(240, 234, 152);
+        cursor: pointer;
+        margin: 0 auto;
+      }
+
+      #btn svg {
+        width: 1.5rem;
+        height: 1.5rem;
+        fill: none;
+        stroke: rgb(60, 40, 90);
+        stroke-width: 1.8;
+        stroke-linejoin: round;
+        stroke-linecap: round;
+      }
+
+      @keyframes btn {
+        0% {
+          transform: translate(0, 0) rotate(0deg);
+          opacity: 1;
+        }
+        15% {
+          transform: translate(-10px, 6px) rotate(-10deg);
+          opacity: 1;
+        }
+        100% {
+          transform: translate(500px, -220px) rotate(20deg);
+          opacity: 0;
+        }
+      }
+
+      #btn.is-flying {
+        animation: btn 1.5s ease-in forwards;
+      }
+
+      #status {
+        min-height: 1.5rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Simple Animation</h1>
+
+    <form>
+      <div class="input">
+        <label for="userName">Enter Your Name</label>
+        <input
+          type="text"
+          id="userName"
+          name="userName"
+          required
+          minlength="2"
+        />
+      </div>
+
+      <div class="input">
+        <label for="email">Enter Your Email</label>
+        <input type="email" id="email" name="email" required />
+      </div>
+
+      <button type="submit" id="btn" aria-label="Submit">
+        <svg viewBox="0 0 24 24">
+          <path d="M21 3 3 10.6l7 2.6M21 3l-7.6 18-2.6-7.4M21 3 10.4 13.2" />
+        </svg>
+      </button>
+
+      <p id="status"></p>
+    </form>
+
+    <script>
+      const form = document.querySelector("form");
+      const btn = document.getElementById("btn");
+      const status = document.getElementById("status");
+      const nameInput = document.getElementById("userName");
+
+      // 1. when the form is submitted, start the animation
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        btn.classList.add("is-flying");
+      });
+
+      // 2. when the animation finishes, reset it so it can run again
+      btn.addEventListener("animationend", () => {
+        btn.classList.remove("is-flying");
+        status.replaceChildren(
+          document.createTextNode("Welcom"),
+
+          document.createTextNode(" " + nameInput.value),
+          Object.assign(document.createElement("span"), {
+            className: "hand",
+            textContent: "👋",
+          }),
+        );
+      });
+    </script>
+  </body>
+</html>
